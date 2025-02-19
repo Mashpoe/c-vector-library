@@ -155,6 +155,49 @@ Some functions and macros take a normal vector argument, e.g. `vec`, while other
 | reserve space for 255 items in `vec`    | `vector_reserve(&vec, 255);`               | yes                     |
 | make a copy of `vec`                    | `type* vec_copy = vector_copy(vec);`       | no                      |
 
+# Convenience Iterator and Access Macros
+
+Several macros are implemented to make iteration and element access more convenient
+
+### `vector_front(vec)`
+
+Access the first element in the vector by value (`vec[0]`).
+
+Will cause an out-of-bounds access on an empty vector.
+
+### `vector_back(vec)`
+
+Access the last element in the vector by value (`vec[vector_size(vec) - 1]`).
+
+Will cause an out-of-bounds access on an empty vector.
+
+### `vector_begin(vec)`
+
+Address of first element in vector (`vec`).
+
+### `vector_end(vec)`
+
+Address of element "past the end" of the vector. (`vec + vector_size(vec)`).
+
+### `vector_foreach(*T, vec)`
+
+Iterate over the vector using the provided item pointer.
+
+```c
+int *int_vec = vector_create();
+
+for (size_t i = 0; i < 100; i += 1) {
+    vector_add(&int_vec, i);
+}
+
+int sum = 0;
+vector_foreach(int *ip, int_vec) {
+    sum += *ip;
+}
+
+printf ("The sum of items is %d", sum);
+```
+
 # Missing typeof Reference Sheet
 
 Because some compilers don't support the `typeof` operator, which is used for static type checks in some of this library's macros, you have to use a slightly different set of macros. Unfortunately, this also means some errors will be missed at compile time, so if you're getting runtime errors, make sure you are properly using `vec` and `&vec` for their corresponding calls.
