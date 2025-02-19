@@ -97,6 +97,24 @@ typedef size_t vec_type_t;
 #define vector_copy(vec)\
 	(_vector_copy((vector)vec, sizeof(*vec)))
 
+/*
+ * Convenience macros for iteration and access
+ */
+
+// Get last element in vector by value (warning--vector may be empty!)
+#define vector_back(vec) (vec[vector_size(vec) - 1])
+
+// Get pointer to object past end of vector for iterator use
+#define vector_end(vec) (vec + vector_size(vec))
+
+// Get first element in vector by value (warning--vector may be empty!)
+#define vector_front(vec) (vec[0])
+
+#define vector_begin(vec) (vec)
+
+#define vector_foreach(item, vec) for(int _cont = 1, _count = 0; _cont && _count < vector_size(vec); _cont = 1, _count += 1) \
+                                             for (item = vector_begin(vec) + _count; _cont; _cont = 0)
+
 vector vector_create(void);
 
 void vector_free(vector vec);
